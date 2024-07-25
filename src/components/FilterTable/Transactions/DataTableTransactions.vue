@@ -1,26 +1,32 @@
 <script setup lang="ts">
 
-import type { Block } from '@/types'
+import type {  Transaction } from '@/types'
 import { computed, ref } from 'vue'
 import SearchForm from '@/components/FilterTable/SearchForm.vue'
 
 const props = defineProps<{
-  blocks: Block[]
+  transactions: Transaction[]
 }>();
 const searchFilter = ref<string>('');
 
-const filteredItems = computed<Block[]>(() => {
+const filteredItems = computed<Transaction[]>(() => {
 
-  let items = props.blocks;
+  let items = props.transactions;
 
   if(searchFilter.value !== '') {
     items =  items.filter(item =>
       item._id
+        .toString()
         .toLowerCase()
         .includes(searchFilter.value.trim().toLowerCase()) ||
-      item.seqno
+      item.account
         .toString()
-        .includes(searchFilter.value.trim())
+        .toLowerCase()
+        .includes(searchFilter.value.trim().toLowerCase()) ||
+      item.address
+        .toString()
+        .toLowerCase()
+        .includes(searchFilter.value.trim().toLowerCase())
     )
   }
 
@@ -36,7 +42,9 @@ const handleSearch = (query: string): void => {
 <template>
   <div class="bg-white relative border rounded-lg">
     <div class="flex items-center justify-between">
-      <SearchForm @search="handleSearch"/>
+      <SearchForm
+        placeholder="Search By _ID or Account or Address"
+        @search="handleSearch"/>
       <div class="flex items-center justify-end text-sm font-semibold mr-4">
       </div>
     </div>
@@ -44,9 +52,9 @@ const handleSearch = (query: string): void => {
       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
       <tr>
         <th class="px-4 py-3">_ID</th>
-        <th class="px-4 py-3">Seqno</th>
-        <th class="px-4 py-3">File hash</th>
-        <th class="px-4 py-3">Title</th>
+        <th class="px-4 py-3">Processed</th>
+        <th class="px-4 py-3">Account</th>
+        <th class="px-4 py-3">Address</th>
         <th class="px-4 py-3">Date Time</th>
         <th class="px-4 py-3">
           <span class="sr-only">Actions</span>
@@ -61,21 +69,21 @@ const handleSearch = (query: string): void => {
         <td class="px-4 py-3 font-medium text-gray-900">
           {{ item._id }}
         </td>
-        <td class="px-4 py-3 font-medium text-gray-900">
-          {{ item.seqno }}
+        <td class="px-4 py-3 font-medium text-gray-900 truncate">
+          {{ item.processed }}
+        </td>
+        <td class="px-4 py-3 truncate">
+          {{ item.account }}
         </td>
         <td class="px-4 py-3 ">
-          {{ item.file_hash }}
+          {{ item.address }}
         </td>
         <td class="px-4 py-3 ">
-          {{ item.workchain }}
-        </td>
-        <td class="px-4 py-3 ">
-          {{ new Date(item.timestamp * 1000).toLocaleString() }}
+          {{ new Date(item.utime * 1000).toLocaleString() }}
         </td>
         <td class="px-4 py-3 ">
           <RouterLink
-            :to="{ name: 'AdminBlock', params: { id: item.seqno } }"
+            :to="{ name: 'AdminTransaction', query: { account: item.account, lt: item.lt, hash: item.hash  } }"
             class="text-indigo-500 hover:underline">Details</RouterLink>
         </td>
       </tr>
@@ -83,3 +91,11 @@ const handleSearch = (query: string): void => {
     </table>
   </div>
 </template>
+<style scoped>
+.truncate {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

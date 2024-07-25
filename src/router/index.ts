@@ -27,7 +27,7 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/blocks/:id',
+        path: '/block/:id',
         name: 'AdminBlock',
         component: () => import('@/pages/admin/blocks/BlockPage.vue'),
         props: true
@@ -39,6 +39,11 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Transactions'
         }
+      },
+      {
+        path: '/transaction',
+        name: 'AdminTransaction',
+        component: () => import('@/pages/admin/transactions/TransactionPage.vue'),
       },
       {
         path: '/messages',

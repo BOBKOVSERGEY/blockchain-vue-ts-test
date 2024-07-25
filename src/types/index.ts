@@ -12,9 +12,19 @@ export interface Shard {
 
 export interface Transaction {
   _id: string,
-  process: boolean,
+  processed: boolean,
+  out_messages: [],
   account: string,
-  address: string
+  hash: string,
+  lt: string,
+  address: string,
+  utime: number,
+  data: string,
+  fee: number,
+  storage_fee: number,
+  other_fee: number,
+  out_msgs: [],
+  __v: number
 }
 
 

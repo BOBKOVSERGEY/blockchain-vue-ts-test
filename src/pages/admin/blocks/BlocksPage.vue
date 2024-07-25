@@ -4,12 +4,14 @@ import PageComponent from '@/components/PageComponent.vue';
 import {  useBlockStore } from '@/stores/blockStore';
 import { storeToRefs } from 'pinia'
 import { onBeforeMount } from 'vue'
-import DataTable from '@/components/FilterTable/DataTable.vue'
+import DataTable from '@/components/FilterTable/Blocks/DataTableBlocks.vue'
 
-const { blocks, errors, isLoading} = storeToRefs(useBlockStore());
+const { blocks, errors, isLoading } = storeToRefs(useBlockStore());
 const blockStore = useBlockStore();
 
-onBeforeMount(blockStore.getBlocks);
+onBeforeMount(async () => {
+  await blockStore.getBlocks();
+});
 
 </script>
 
