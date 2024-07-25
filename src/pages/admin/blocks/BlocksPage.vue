@@ -4,6 +4,7 @@ import PageComponent from '@/components/PageComponent.vue';
 import {  useBlockStore } from '@/stores/blockStore';
 import { storeToRefs } from 'pinia'
 import { onBeforeMount } from 'vue'
+import DataTable from '@/components/FilterTable/DataTable.vue'
 
 const { blocks, errors, isLoading} = storeToRefs(useBlockStore());
 const blockStore = useBlockStore();
@@ -21,9 +22,7 @@ onBeforeMount(blockStore.getBlocks);
       <p>{{ errors }}</p>
     </div>
     <div v-else>
-        <pre>
-          {{ blocks }}
-        </pre>
+        <DataTable :blocks="blocks" />
     </div>
   </PageComponent>
 </template>

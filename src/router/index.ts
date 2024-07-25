@@ -6,6 +6,9 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'Admin',
     component: () => import('@/pages/admin/AdminPage.vue'),
+    redirect: () => {
+      return { name: 'AdminDashboard'  }
+    },
     children: [
       {
         path: '/',
@@ -19,26 +22,47 @@ const routes: RouteRecordRaw[] = [
         path: '/blocks',
         name: 'AdminBlocks',
         component: () => import('@/pages/admin/blocks/BlocksPage.vue'),
+        meta: {
+          title: 'Blocks'
+        }
+      },
+      {
+        path: '/blocks/:id',
+        name: 'AdminBlock',
+        component: () => import('@/pages/admin/blocks/BlockPage.vue'),
+        props: true
       },
       {
         path: '/transactions',
         name: 'AdminTransactions',
         component: () => import('@/pages/admin/transactions/TransactionsPage.vue'),
+        meta: {
+          title: 'Transactions'
+        }
       },
       {
         path: '/messages',
         name: 'AdminMessages',
         component: () => import('@/pages/admin/messages/MessagesPage.vue'),
+        meta: {
+          title: 'Messages'
+        }
       },
       {
         path: '/addresses',
         name: 'AdminAddresses',
         component: () => import('@/pages/admin/addresses/AddressesPage.vue'),
+        meta: {
+          title: 'Addresses'
+        }
       },
       {
         path: '/contracts',
         name: 'AdminContracts',
         component: () => import('@/pages/admin/contracts/ContractsPage.vue'),
+        meta: {
+          title: 'Contracts'
+        }
       }
     ],
   },
